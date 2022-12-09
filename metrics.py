@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plot
 
-# this class holds the data for extra cretid #1
+# this class holds the data for extra credit #1
 class Metrics:
 	def __init__(self, time_circumference_list, time_area_list, number_of_points_list, accuracy_circumference_list,
 		accuracy_area_list, estimated_circumference_list, estimated_area_list):
