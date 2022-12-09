@@ -32,6 +32,7 @@ class NumericalMethodResult:
 		print('estimated area: {} ({} seconds)'.format(self.estimated_area, self.time_area))
 		print('actual area: {}'.format(self.actual_area))
 
+	# credit to Team-A for laying out how to do the plot
 	def plot(self):
 		fig, ax = plot.subplots()
 		ax.scatter(self.get_x_coordinates(), self.get_y_coordinates(), color="green")
