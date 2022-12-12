@@ -31,6 +31,8 @@ def main():
 		# print('number of points: {}, circumference accuracy: {}%, area_accuracy: {}%, time: {}s'.format(n, accuracy_circumference, accuracy_area, result.time_point_list + result.time_circumference + result.time_area))
 		# result.print()
 		if n == number_of_points:
+			print('estimated circumference: {}, estimated area: {}'.format(result.estimated_circumference, result.estimated_area))
+			print('actual circumference:    {}, actual area:    {}'.format(result.actual_circumference, result.actual_area))
 			# extra credit #3, just take an estimated circumference and divide by 2*radius
 			print('pi estimated to be approximately {}.'.format(result.estimated_circumference / (2 * radius) ))
 			result.plot()
@@ -97,9 +99,15 @@ def run_numerical_method(center_x, center_y, radius, number_of_points, method):
 	point_list, time_point_list = generate_point_list(center_x, center_y, radius, number_of_points, method)
 	estimated_circumference, time_circumference = estimate_circumference(point_list)
 	actual_circumference = math.pi * radius * 2
-	estimated_area, time_area = estimate_area_by_summing_radial_triangles(point_list, center_x, center_y, method)
+	
+	# estimated_area, time_area = estimate_area_by_summing_radial_triangles(point_list, center_x, center_y, method)
 	# below is an implementation to satisfy extra credit #2
 	# estimated_area, time_area = estimate_area_by_summing_oriental_fan_triangles(point_list, center_x, center_y, method)
+	# another implementation to satisfy extra credit #2
+	estimated_area, time_area = area_of_polygon(point_list)
+	
+	# print('({} points) run_numerical_method, point_list: {}'.format(len(point_list), point_list))
+
 	actual_area = math.pi * radius * radius
 	result = NumericalMethodResult(
 		number_of_points,
@@ -190,14 +198,25 @@ def estimate_area_by_summing_oriental_fan_triangles(point_list, center_x, center
 	end_time = time.time()
 	return area, end_time - start_time
 
-# calculate the area of an arbitrary triangle by summing the discriminants of a matrix of coeficients (points),
-# a point index of 1 is the x-coordinate, an index of 2 is the y-coordinate
+# Calculate the area of an arbitrary triangle by summing the discriminants of a matrix of coeficients (points),
+# a point index of 1 is the x-coordinate, an index of 2 is the y-coordinate.
+# Could construct a small point list and send it to area_of_polygon instead.
 def area_of_triangle(p1, p2, p3):
 	return abs(
 		(p1[1] * p2[2] - (p2[1] * p1[2])) +
 		(p2[1] * p3[2] - (p3[1] * p2[2])) +
 		(p3[1] * p1[2] - (p1[1] * p3[2]))
 		) / 2
+
+def area_of_polygon(point_list):
+	start_time = time.time()
+	points = point_list.copy()
+	points.append(point_list[0]) # need to copy the first point to the end of the list
+	discriminant_sum = 0
+	for i in range(len(points) - 1):
+		discriminant_sum += (points[i][1] * points[i+1][2]) - (points[i+1][1] * points[i][2])
+	end_time = time.time()
+	return abs(discriminant_sum) / 2, end_time - start_time
 
 if __name__ == '__main__':
 	main()
