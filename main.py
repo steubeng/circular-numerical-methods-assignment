@@ -104,10 +104,12 @@ def run_numerical_method(center_x, center_y, radius, number_of_points, method):
 	# below is an implementation to satisfy extra credit #2
 	# estimated_area, time_area = estimate_area_by_summing_oriental_fan_triangles(point_list, center_x, center_y, method)
 	# another implementation to satisfy extra credit #2
-	estimated_area, time_area = area_of_polygon(point_list)
+	estimated_area, time_area = area_of_polygon_by_summing_discriminants(point_list)
 	
-	# print('({} points) run_numerical_method, point_list: {}'.format(len(point_list), point_list))
-
+	print('number of points: {}'.format(len(point_list)))
+	for i in range(len(point_list)):
+		print('  ({}): {}'.format(i, point_list[i]))
+	
 	actual_area = math.pi * radius * radius
 	result = NumericalMethodResult(
 		number_of_points,
@@ -208,7 +210,7 @@ def area_of_triangle(p1, p2, p3):
 		(p3[1] * p1[2] - (p1[1] * p3[2]))
 		) / 2
 
-def area_of_polygon(point_list):
+def area_of_polygon_by_summing_discriminants(point_list):
 	start_time = time.time()
 	points = point_list.copy()
 	points.append(point_list[0]) # need to copy the first point to the end of the list
